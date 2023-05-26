@@ -9,7 +9,7 @@ java -jar ShiMo.jar -h
 ```
 使用
 ```
-java -jar ShiMo.jar -c s%*******1 s%*******2 s%*******3 -f 文件夹ID 
+java -jar ShiMo.jar -c s%*******1 s%*******2 s%*******3 -f 文件夹(卡通过下图获取) 
 ```
 
 获取Cookie
