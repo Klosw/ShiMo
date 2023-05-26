@@ -8,7 +8,7 @@ fun String.replaceBadChar(): String {
 }
 
 fun String.replaceFileBadChar(): String {
-    return this.replace("[\\?\\\\/:|<>\\*]".toRegex(), "_")
+    return this.replace("[\\?\\\\/:|<>\\*]".toRegex(), "_").trim()
 }
 
 fun String.encodeURL(): String {

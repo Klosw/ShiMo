@@ -1,5 +1,6 @@
 import HttpApi.checkMeAll
 import TokenPool.isSwitch
+import attach.replaceFileBadChar
 import bean.Ancestor
 import java.io.File
 
@@ -69,7 +70,7 @@ fun list(id: String, superior: String = "") {
     val folder = HttpApi.getFolder(id)
     folder.forEach { item ->
         if (item.isFolder) {
-            list(item.guid, "${superior.trim()}${item.name.trim()}/")
+            list(item.guid, "${superior.trim()}${item.name.replaceFileBadChar()}/")
         } else {
             val file = File(superior)
             if (!file.exists()) {
