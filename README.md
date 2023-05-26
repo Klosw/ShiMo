@@ -28,7 +28,7 @@ About
 --
 * Email：kloswc@gmail.com
 
-License
+[License](https://github.com/Klosw/ShiMo/blob/master/LICENSE)
 --
  
 
