@@ -1,8 +1,12 @@
 import TokenPool.getListCookies
+import attach.replaceFileBadChar
 import attach.toBean
 import bean.*
 import cn.hutool.core.io.StreamProgress
-import cn.hutool.http.*
+import cn.hutool.http.HttpException
+import cn.hutool.http.HttpRequest
+import cn.hutool.http.HttpResponse
+import cn.hutool.http.HttpUtil
 import java.io.File
 import kotlin.system.exitProcess
 
@@ -97,7 +101,7 @@ object HttpApi {
     fun downloadShiMo(item: FolderItem, folder: String) {
         println("${item.name}↓")
         val url = "https://shimo.im/lizard-api/files/${item.guid}/download"
-        val file = File(folder, item.name)
+        val file = File(folder, item.name.replaceFileBadChar())
         if (file.exists()) {
             println("${item.name} 跳过↑")
             return
@@ -108,7 +112,7 @@ object HttpApi {
     fun downloadExport(item: FolderItem, folder: String) {
         println("${item.name}↓↓")
         val fileType = TypeEnum.getFileType(item.type)
-        val file = File(folder, "${item.name}.${fileType}")
+        val file = File(folder, "${item.name.replaceFileBadChar()}.${fileType}")
         if (file.exists()) {
             println("${item.name} 跳过↑↑")
             return
