@@ -64,7 +64,7 @@ object HttpApi {
                 return exportDownloadUrl
             } else {
                 Thread.sleep(1000)
-                println("等待获取下载地址...")
+                Print.println("等待获取下载地址[${exportDownloadUrl.data.progress}]...")
             }
         }
     }
@@ -100,72 +100,78 @@ object HttpApi {
     }
 
     fun downloadShiMo(item: FolderItem, folder: String) {
-        println("${item.name}↓")
         val url = "https://shimo.im/lizard-api/files/${item.guid}/download"
         val file = File(folder, item.name.replaceFileBadChar())
         if (file.exists()) {
-            println("${item.name} 跳过↑")
+            Print.skip++
+            Print.println("跳过↑")
             return
         }
         downloadFile(url, file)
+        Print.success++
     }
 
     fun downloadExport2(item: FolderItem, folder: String, retry: Int = 3) {
-        println("${item.name}↓↓↓")
         val fileType = TypeEnum.getFileType(item.type)
         val file = File(folder, "${item.name.replaceFileBadChar()}.${fileType}")
         if (file.exists()) {
-            println("${item.name} 跳过↑↑↑")
+            Print.skip++
+            Print.println("跳过↑↑↑")
             return
         }
         val url =
             "https://shimo.im/lizard-api/files/${item.guid}/export?type=${fileType}&file=${item.guid}&returnJson=1&name=${item.name.encodeURL()}&isAsync=0&timezoneOffset=-8"
         val entity = getHeadersRequestBody(url).toBean(RedirectEntity::class.java)
         if (retry == -1) {
-            println("下载失败 ${item.name}×")
+            Print.fail++
+            Print.println("下载失败 ${item.name}×")
             return
         }
         if (entity.redirectUrl == null) {
-            println("${item.name}●")
+            Print.println("${item.name}●")
             TokenPool.setCookieTimeOut()
             downloadExport2(item, folder, retry - 1)
         } else {
             downloadFile(entity.redirectUrl, file)
+            Print.success++
         }
     }
 
     fun downloadExport(item: FolderItem, folder: String) {
-        println("${item.name}↓↓")
         val fileType = TypeEnum.getFileType(item.type)
         val file = File(folder, "${item.name.replaceFileBadChar()}.${fileType}")
         if (file.exists()) {
-            println("${item.name} 跳过↑↑")
+            Print.skip++
+            Print.println("跳过↑↑")
             return
         }
         val export = export(item.guid, TypeEnum.getFileType(item.type))
         if (!export.taskId.isNullOrBlank()) {
             val downloadUrl = getExportDownloadUrlAsync(export.taskId)
             if (downloadUrl.data.downloadUrl.isNullOrBlank()) {
-                println("${item.name}○")
+                Print.println("${item.name}○")
                 TokenPool.setCookieTimeOut()
                 //重新获取数据
                 downloadExport(item, folder)
             } else {
                 downloadFile(downloadUrl.data.downloadUrl, file)
                 if (file.length() == downloadUrl.data.fileSize) {
-                    println("文件下载 成功√")
+                    Print.println("文件下载 成功√")
+                    Print.success++
                 } else {
-                    println("文件下载 失败×")
+                    Print.println("文件下载 失败×")
                     file.delete()
+                    Print.fail++
                 }
             }
         } else {
             //导出失败，请重试
             if (export.status == 120007) {
-                println("${export.message} 失败×")
+                Print.fail++
+                Print.println("${export.message} 失败×")
                 return
             }
-            println("${item.name}●")
+            Print.println("${item.name}●")
             TokenPool.setCookieTimeOut()
             downloadExport(item, folder)
         }
@@ -196,10 +202,10 @@ object HttpApi {
             val meEntity =
                 getHeadersRequestBody("https://shimo.im/lizard-api/users/me", it).toBean(MeEntity::class.java);
             if (meEntity.id == null) {
-                println("cookie校验失败!")
+                Print.println("cookie校验失败!")
                 exitProcess(1)
             }
-            println("团队: ${meEntity.team.name} 用户: ${meEntity.name} ")
+            Print.println("团队: ${meEntity.team.name} 用户: ${meEntity.name} ")
         }
     }
 

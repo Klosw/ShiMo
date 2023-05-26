@@ -20,7 +20,7 @@ fun main(args: Array<String>) {
     val parseArgs = Args.parseArgs(args)
     if (parseArgs.contains(HELP) || parseArgs.contains(HELP2)) {
         val help = """
-            version 1.2
+            version 1.3
             -path       文件下载路径
             -f          指定下载哪个文件夹数据 desktop 下载我的桌面数据 只下载第一个cookies的桌面
             -c          指定cookies可以传多个参数 例如 -c cookies1 cookies2 cookies3 cookies4
@@ -46,6 +46,7 @@ fun main(args: Array<String>) {
     checkMeAll()
     val folderId = parseArgs[FOLDER]?.first()
     listSpaces(folderId ?: "")
+    Print.close()
 }
 
 fun listSpaces(folderId: String = "") {
@@ -77,26 +78,31 @@ fun list(id: String, superior: String = "") {
                 file.mkdirs()
             }
             if (TypeEnum.isSkip(item.type)) {
-                println("跳过 -> $superior${item.name}")
+                Print.println("跳过 -> $superior${item.name}")
+                Print.fail++
             } else {
                 if (TypeEnum.isDownload(item.type) || !item.downloadUrl.isNullOrBlank()) {
+                    Print.println("$superior${item.name}↓")
                     HttpApi.downloadShiMo(item, file.absolutePath)
-                    println("$superior${item.name}")
+                    Print.println("$superior${item.name}√")
                 } else {
                     when {
                         TypeEnum.isTransformation(item.type) -> {
+                            Print.fail++
                             //这里不想转换了
-                            println("失败 -> $superior${item.name}")
+                            Print.println("失败 -> $superior${item.name}")
                         }
 
                         TypeEnum.isOrderDownLoad(item.type) -> {
+                            Print.println("$superior${item.name}↓↓↓")
                             HttpApi.downloadExport2(item, file.absolutePath)
-                            println("$superior${item.name}")
+                            Print.println("$superior${item.name}√")
                         }
 
                         else -> {
+                            Print.println("$superior${item.name}↓↓")
                             HttpApi.downloadExport(item, file.absolutePath)
-                            println("$superior${item.name}")
+                            Print.println("$superior${item.name}√")
                         }
                     }
                 }

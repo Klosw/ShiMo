@@ -43,13 +43,13 @@ object TokenPool {
                 val i = cookieAvailableTime.indexOf(min)
                 val l = min - Date().time
                 if (l > 0) {
-                    println("等待${l}ms")
+                    Print.println("等待${l}ms")
                     Thread.sleep(l)
                 }
                 cookies[i]
             } else {
                 val timex = longTime - Date().time
-                println("等待${timex}ms")
+                Print.println("等待${timex}ms")
                 Thread.sleep(timex)
                 cookies[index]
             }
