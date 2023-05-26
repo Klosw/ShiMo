@@ -36,7 +36,8 @@ object Print {
     fun close() {
         println("任务完成 \n成功 $success \n失败 $fail \n跳过 $skip")
         Thread.sleep(1000)
-        kotlin.io.println("\n完成用时:${(Date().time - now.time) / 1000}s")
+        println("完成用时:${(Date().time - now.time) / 1000}s")
+        kotlin.io.println()
         addLogFile(Date().toString())
         fileOut.close()
     }
