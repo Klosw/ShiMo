@@ -69,7 +69,7 @@ fun list(id: String, superior: String = "") {
     val folder = HttpApi.getFolder(id)
     folder.forEach { item ->
         if (item.isFolder) {
-            list(item.guid, "$superior${item.name}/")
+            list(item.guid, "${superior.trim()}${item.name.trim()}/")
         } else {
             val file = File(superior)
             if (!file.exists()) {
