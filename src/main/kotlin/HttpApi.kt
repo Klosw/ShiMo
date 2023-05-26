@@ -143,7 +143,13 @@ object HttpApi {
             return
         }
         val export = export(item.guid, TypeEnum.getFileType(item.type))
-        if (export.taskId != null) {
+        if (!export.taskId.isNullOrBlank()) {
+            //导出失败，请重试
+            if (export.status == 120007) {
+                println("${export.message} 失败×")
+                return
+            }
+
             val downloadUrl = getExportDownloadUrlAsync(export.taskId)
             if (downloadUrl.data.downloadUrl.isNullOrBlank()) {
                 println("${item.name}○")
