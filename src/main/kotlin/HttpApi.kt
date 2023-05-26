@@ -144,12 +144,6 @@ object HttpApi {
         }
         val export = export(item.guid, TypeEnum.getFileType(item.type))
         if (!export.taskId.isNullOrBlank()) {
-            //导出失败，请重试
-            if (export.status == 120007) {
-                println("${export.message} 失败×")
-                return
-            }
-
             val downloadUrl = getExportDownloadUrlAsync(export.taskId)
             if (downloadUrl.data.downloadUrl.isNullOrBlank()) {
                 println("${item.name}○")
@@ -166,6 +160,11 @@ object HttpApi {
                 }
             }
         } else {
+            //导出失败，请重试
+            if (export.status == 120007) {
+                println("${export.message} 失败×")
+                return
+            }
             println("${item.name}●")
             TokenPool.setCookieTimeOut()
             downloadExport(item, folder)
