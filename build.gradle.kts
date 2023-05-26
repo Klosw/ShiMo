@@ -26,7 +26,11 @@ tasks.test {
 kotlin {
     jvmToolchain(11)
 }
-
+tasks.withType<Jar> {
+//    manifest {
+//        attributes["Main-Class"] = "MainKt"
+//    }
+}
 application {
     mainClass.set("MainKt")
 }
