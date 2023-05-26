@@ -113,7 +113,7 @@ object HttpApi {
     fun downloadExport2(item: FolderItem, folder: String, retry: Int = 3) {
         println("${item.name}↓↓↓")
         val fileType = TypeEnum.getFileType(item.type)
-        val file = File(folder, item.name.replaceFileBadChar())
+        val file = File(folder, "${item.name.replaceFileBadChar()}.${fileType}")
         if (file.exists()) {
             println("${item.name} 跳过↑↑↑")
             return
