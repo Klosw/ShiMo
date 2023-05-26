@@ -82,12 +82,21 @@ fun list(id: String, superior: String = "") {
                     HttpApi.downloadShiMo(item, file.absolutePath)
                     println("$superior${item.name}")
                 } else {
-                    if (TypeEnum.isTransformation(item.type)) {
-                        //这里不想转换了
-                        println("失败 -> $superior${item.name}")
-                    } else {
-                        HttpApi.downloadExport(item, file.absolutePath)
-                        println("$superior${item.name}")
+                    when {
+                        TypeEnum.isTransformation(item.type) -> {
+                            //这里不想转换了
+                            println("失败 -> $superior${item.name}")
+                        }
+
+                        TypeEnum.isOrderDownLoad(item.type) -> {
+                            HttpApi.downloadExport2(item, file.absolutePath)
+                            println("$superior${item.name}")
+                        }
+
+                        else -> {
+                            HttpApi.downloadExport(item, file.absolutePath)
+                            println("$superior${item.name}")
+                        }
                     }
                 }
             }

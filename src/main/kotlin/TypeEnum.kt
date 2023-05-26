@@ -9,7 +9,6 @@ enum class TypeEnum(private val type: String) {
 
     PPT("pptx"), //
     PRESENTATION("pptx"),//pptx,
-    SLIDE("pptx"), //
 
 
     DOC("docx"), //
@@ -28,6 +27,8 @@ enum class TypeEnum(private val type: String) {
     MP4("unknown"), //
     UNKNOWN("unknown"),//
 
+    SLIDE("pptx"), //
+
     BOARD("board"),//不知道啥
     TABLE("table"), //
     FOLDER("folder"),//
@@ -36,9 +37,13 @@ enum class TypeEnum(private val type: String) {
     ;
 
     companion object {
+        //另一种下载方式
+        fun isOrderDownLoad(type: String): Boolean {
+            return type.lowercase() == SLIDE.name.lowercase()
+        }
+
         fun isTransformation(type: String): Boolean {
-            val fileType = getFileType(type)
-            return fileType == TABLE.type
+            return type == TABLE.name.lowercase()
         }
 
         /**

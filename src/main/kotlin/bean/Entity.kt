@@ -198,3 +198,7 @@ data class Ancestor(
     val id: Long,
     val name: String,
 )
+
+data class RedirectEntity(
+    val redirectUrl: String?,
+)

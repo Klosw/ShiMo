@@ -1,4 +1,5 @@
 import TokenPool.getListCookies
+import attach.encodeURL
 import attach.replaceFileBadChar
 import attach.toBean
 import bean.*
@@ -107,6 +108,30 @@ object HttpApi {
             return
         }
         downloadFile(url, file)
+    }
+
+    fun downloadExport2(item: FolderItem, folder: String, retry: Int = 3) {
+        println("${item.name}↓↓↓")
+        val fileType = TypeEnum.getFileType(item.type)
+        val file = File(folder, item.name.replaceFileBadChar())
+        if (file.exists()) {
+            println("${item.name} 跳过↑↑↑")
+            return
+        }
+        val url =
+            "https://shimo.im/lizard-api/files/${item.guid}/export?type=${fileType}&file=${item.guid}&returnJson=1&name=${item.name.encodeURL()}&isAsync=0&timezoneOffset=-8"
+        val entity = getHeadersRequestBody(url).toBean(RedirectEntity::class.java)
+        if (retry == -1) {
+            println("下载失败 ${item.name}×")
+            return
+        }
+        if (entity.redirectUrl == null) {
+            println("${item.name}●")
+            TokenPool.setCookieTimeOut()
+            downloadExport2(item, folder, retry - 1)
+        } else {
+            downloadFile(entity.redirectUrl, file)
+        }
     }
 
     fun downloadExport(item: FolderItem, folder: String) {
