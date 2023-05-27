@@ -203,7 +203,7 @@ object HttpApi {
                 Print.println("cookie校验失败!")
                 exitProcess(1)
             }
-            val logs = "团队: ${meEntity.team.name} 用户: ${meEntity.name} "
+            val logs = "团队: ${meEntity.team?.name ?: "无"} 用户: ${meEntity.name} "
             Print.addLogFile(logs)
             println(logs)
         }

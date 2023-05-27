@@ -86,7 +86,7 @@ data class MeEntity(
     val name: String,
     val requiresIdentityVerification: Boolean,
     val status: Int,
-    val team: Team,
+    val team: Team?,
     val teamId: Int,
     val teamRole: String,
     val teamTime: String,
