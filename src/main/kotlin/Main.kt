@@ -20,7 +20,7 @@ fun main(args: Array<String>) {
     val parseArgs = Args.parseArgs(args)
     if (parseArgs.contains(HELP) || parseArgs.contains(HELP2)) {
         val help = """
-            version 1.4
+            version 1.5
             -path       文件下载路径
             -f          指定下载哪个文件夹数据 desktop 下载我的桌面数据 只下载第一个cookies的桌面
             -c          指定cookies可以传多个参数 例如 -c cookies1 cookies2 cookies3 cookies4
