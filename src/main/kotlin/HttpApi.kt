@@ -2,12 +2,10 @@ import TokenPool.getListCookies
 import attach.encodeURL
 import attach.replaceFileBadChar
 import attach.toBean
+import attach.toJson
 import bean.*
 import cn.hutool.core.io.StreamProgress
-import cn.hutool.http.HttpException
-import cn.hutool.http.HttpRequest
-import cn.hutool.http.HttpResponse
-import cn.hutool.http.HttpUtil
+import cn.hutool.http.*
 import java.io.File
 import kotlin.system.exitProcess
 
@@ -210,5 +208,4 @@ object HttpApi {
             println(logs)
         }
     }
-
 }

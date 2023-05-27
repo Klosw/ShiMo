@@ -30,7 +30,7 @@ enum class TypeEnum(private val type: String) {
     SLIDE("pptx"), //
 
     BOARD("board"),//不知道啥
-    TABLE("table"), //
+    TABLE("xlsx"), //
     FOLDER("folder"),//
     SHORTCUT("shortcut"),//链接
 

@@ -58,7 +58,8 @@ fun listSpaces(folderId: String = "") {
     } else {
         if (folderId.lowercase() == DESKTOP) {
             isSwitch = false
-            list("", DESKTOP_PATH)
+            val me = HttpApi.getMe()
+            list("", "${DESKTOP_PATH}${me.name}/")
         } else {
             val ancestors = HttpApi.ancestors(folderId)
             val folderPath = ancestors.data.ancestors.map(Ancestor::name).joinToString("/")
@@ -88,9 +89,9 @@ fun list(id: String, superior: String = "") {
                 } else {
                     when {
                         TypeEnum.isTransformation(item.type) -> {
-                            Print.fail++
-                            //这里不想转换了
-                            Print.println("失败 -> $superior${item.name}")
+                            Print.println("$superior${item.name}↓↓↓↓")
+                            HttpApi.downloadExport2(item, file.absolutePath)
+                            Print.println("$superior${item.name}√")
                         }
 
                         TypeEnum.isOrderDownLoad(item.type) -> {

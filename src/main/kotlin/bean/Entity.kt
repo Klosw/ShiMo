@@ -202,3 +202,6 @@ data class Ancestor(
 data class RedirectEntity(
     val redirectUrl: String?,
 )
+data class GuidEntity(
+    val guid: String
+)
